@@ -1,5 +1,5 @@
 
-#include "string_internal.h"
+#include "_string_internal.h"
 
 #include <stdio.h>
 #include <stdlib.h>
