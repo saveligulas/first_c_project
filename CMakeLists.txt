@@ -6,9 +6,10 @@ set(CMAKE_C_STANDARD 11)
 add_executable(untitled main.c
         contact.c
         contact.h
-        stringlib/include/stringlib.h
-        stringlib/src/string_lifecycle.c
-        stringlib/internal/string_internal.h
-        stringlib/internal/string_internal.c
-        stringlib/src/string_info.c
-        stringlib/src/string_manipulation.c)
+        stryx/include/stryx.h
+        stryx/src/string_lifecycle.c
+        stryx/internal/_string_internal.h
+        stryx/internal/string_internal.c
+        stryx/src/string_info.c
+        stryx/src/string_manipulation.c
+        stryx/src/string_extraction.c)
