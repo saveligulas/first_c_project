@@ -4,6 +4,7 @@
 
 #include "contact.h"
 #include "string.h"
+#include "stringlib/include/stringlib.h"
 
 int main() {
     // String *iva_name = string_create_w_cap(3);
@@ -32,14 +33,17 @@ int main() {
     //
     // print_all_contacts(my_contacts, 3);
 
-    String *str = string_create();
-    for (int i = 0; i < 10; i++) {
-        string_append_chars(str, "abcdefghajksdfjklasdfjkljlkasdfjklaskjldfjklasdfjklajklsdfjklaskldfjklasdöfjk aösdfj aösldkjfaö slkdjföa lskdjfö alsdjkf öaklsdjf öalskdjf öaskldfj öaslkdfj ölaskdjf ölaskdfj öaslkdf jöalsdkf ");
-        string_print(str);
-        printf("Capacity: %d - Length: %d\n", str->capacity, str->length);
-    }
+    String *str = string_create("f+W/N-2PGNYJGV87.::ZD1vj0:2*,Q0U6$1PeRrm+3}&SZwB+Bkw:/MPPr?0RRFX");
+    String *clone = string_clone(str);
+    string_print(clone);
+    string_clear(&clone);
+    string_print(clone);
+
+    string_insert(str, 64, "Blub");
+    string_print(str);
 
     string_destroy(str);
+    string_destroy(clone);
 
     return 0;
 }

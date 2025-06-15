@@ -5,6 +5,7 @@
 #ifndef CONTACT_H
 #define CONTACT_H
 #include "string.h"
+#include "stringlib/include/stringlib.h"
 
 typedef struct Contact Contact;
 
