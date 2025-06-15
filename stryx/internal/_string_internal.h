@@ -1,7 +1,7 @@
 #ifndef STRING_INTERNAL_H
 #define STRING_INTERNAL_H
 
-#include "../include/stringlib.h"
+#include "../include/stryx.h"
 
 struct String {
     char *data;
