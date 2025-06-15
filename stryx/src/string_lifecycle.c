@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../include/stringlib.h"
-#include "../internal/string_internal.h"
+#include "../include/stryx.h"
+#include "../internal/_string_internal.h"
 
 String *string_create_empty() {
     String *self = malloc(sizeof(String));
