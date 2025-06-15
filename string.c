@@ -4,79 +4,132 @@
 
 #include "string.h"
 
+#include <stdbool.h>
 #include <stdlib.h>
 
-void append_str(String *self, String const *str) {
-    if (self == NULL) {
-        printf("String is NULL\n");
-        return;
-    }
-
+static bool is_invalid(const String *str) {
     if (str == NULL) {
-        printf("String to append is NULL\n");
-        return;
+        printf("String(%p) is NULL\n", (void*)str);
+        return true;
     }
 
-    if (self->length < 0) {
-        printf("String length is smaller than 0\n");
-        return;
+    bool found_invalid_state = false;
+
+    if (str->data == NULL) {
+        printf("String(%p) data is NULL\n", (void*)str);
+        found_invalid_state = true;
     }
 
-    if (str->length <= 0) {
-        printf("String to append length is 0\n");
-        return;
+    if (str->length < 0) {
+        printf("String(%p) length is negative: %d\n", (void*)str, str->length);
+        found_invalid_state = true;
     }
 
-    if (self->capacity < self->length + str->length) {
-        printf("String to append is too large to be added\n");
-        return;
+    if (str->capacity < 0) {
+        printf("String(%p) capacity is negative: %d\n", (void*)str, str->capacity);
+        found_invalid_state = true;
     }
 
-    memcpy(self->data + self->length, str->data, str->length);
-    self->length += str->length;
-    self->data[self->length] = NULL_CHAR;
+    if (!found_invalid_state && str->length > str->capacity) {
+        printf("String(%p) length(%d) > capacity(%d)\n", (void*)str, str->length, str->capacity);
+        found_invalid_state = true;
+    }
+
+    return found_invalid_state;
 }
 
-void append_char(String *self, const char *text, int length) {
-    if (self == NULL) {
-        printf("String is NULL\n");
-        return;
+static bool set_string_capacity(String *str, const int new_capacity) {
+    if (is_invalid(str)) return false;
+
+    if (str->capacity >= new_capacity) {
+        printf("String capacity(%d) >= new_capacity(%d)\n", str->capacity, new_capacity);
+        return false;
     }
 
-    if (self->length < 0) {
-        printf("String length is smaller than 0\n");
-        return;
-    }
-
-    if (self->capacity < self->length + length) {
-        printf("String to append is too large to be added\n");
-        return;
-    }
-
-    memcpy(self->data + self->length, text, length);
-    self->length += length;
-    self->data[self->length] = NULL_CHAR;
+    char *new_data = realloc(str->data, new_capacity + 1);
+    if (new_data == NULL) return false;
+    str->data = new_data;
+    str->capacity = new_capacity;
+    return true;
 }
 
-void print(String const *self) {
+static void append_chars(String *str, char const *text, int length) {
+    if (is_invalid(str)) return;
+
+    memcpy(str->data + str->length, text, length);
+    str->length += length;
+    str->data[str->length] = NULL_CHAR;
+}
+
+static void grow_append(String *str, const char *text, const int length) {
+    if (is_invalid(str)) return;
+
+    if (str->length + length > str->capacity) {
+        int new_capacity = str->capacity + (str->capacity >> 1) + length;
+        if (!set_string_capacity(str, new_capacity)) {
+            printf("Appending of Chars failed!");
+            return;
+        }
+    }
+
+    append_chars(str, text, length);
+}
+
+void string_append_str(String *self, String const *str) {
+    if (is_invalid(self) || is_invalid(str)) return;
+
+    grow_append(self, str->data, str->length);
+}
+
+void string_append_chars(String *self, const char *text) {
+    if (is_invalid(self)) return;
+    if (text == NULL) {
+        printf("Char array is NULL\n");
+        return;
+    }
+
+    grow_append(self, text, strlen(text));
+}
+
+void string_append_chars_explicit(String *self, const char *text, int length) {
+    if (is_invalid(self)) return;
+
+    grow_append(self, text, length);
+}
+
+void string_print(String const *self) {
     printf("%.*s\n", self->length, self->data);
 }
 
-String *string_create(const int capacity) {
-    int capacity_with_null = capacity + 1;
-    String temp = { NULL, 0, capacity};
+String *string_create_w_cap(const int capacity) {
     String *self = malloc(sizeof(String));
 
     if (self != NULL) {
-        *self = temp;
-        self->data = malloc(capacity_with_null * sizeof(char));
-        self->data[0] = NULL_CHAR;
+        self->data = malloc(capacity + 1);
+        if (self->data != NULL) {
+            self->data[0] = '\0';
+            self->length = 0;
+            self->capacity = capacity;
+            return self;
+        }
+        free(self);
     }
 
+    return NULL;
+}
+
+String *string_create() {
+    String *self = malloc(sizeof(String));
+    if (self != NULL) {
+        self->length = 0;
+        self->data = malloc(STARTING_STRING_LENGTH * sizeof(char));
+        self->data[0] = NULL_CHAR;
+        self->capacity = STARTING_STRING_LENGTH;
+    }
     return self;
 }
 
-void destroy_string(String *self) {
+void string_destroy(String *self) {
     free(self->data);
     free(self);
 }

@@ -16,14 +16,14 @@ Contact * create_contact(String *name, String *email, int age) {
 
 void print_contact(const Contact *contact) {
     printf("Contact\n");
-    print(contact->name);
-    print(contact->email);
+    string_print(contact->name);
+    string_print(contact->email);
     printf("%d\n", contact->age);
 }
 
 void destroy_contact(Contact *contact) {
-    destroy_string(contact->name);
-    destroy_string(contact->email);
+    string_destroy(contact->name);
+    string_destroy(contact->email);
     free(contact);
 }
 
