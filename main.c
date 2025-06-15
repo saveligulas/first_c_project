@@ -4,7 +4,7 @@
 
 #include "contact.h"
 #include "string.h"
-#include "stringlib/include/stringlib.h"
+#include "stryx/include/stryx.h"
 
 int main() {
     // String *iva_name = string_create_w_cap(3);
