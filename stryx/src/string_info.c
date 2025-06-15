@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../include/stringlib.h"
-#include "../internal/string_internal.h"
+#include "../include/stryx.h"
+#include "../internal/_string_internal.h"
 
 const char* string_cstr(const String* str) {
     const char *cstr = str->data;
@@ -40,14 +40,12 @@ bool string_equals(const String* a, const String* b) {
 
     if (a->length != b->length) return false;
 
-    for (size_t i = 0; i < a->length; i++) {
-        if (a->data[i] != b->data[i]) return false;
-    }
+    if (a->length != b->length) return false;
 
-    return true;
+    return memcmp(a->data, b->data, a->length) == 0;
 }
 
-size_t  string_count_char(const String* str, char c) {
+size_t string_count_char(const String* str, char c) {
     if (_is_invalid(str)) return 0;
 
     if (str->length == 0) return 0;
