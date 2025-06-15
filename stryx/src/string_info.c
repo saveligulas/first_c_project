@@ -6,15 +6,13 @@
 #include "../internal/_string_internal.h"
 
 const char* string_cstr(const String* str) {
-    const char *cstr = str->data;
+    const char* cstr = str->data;
     return cstr;
 }
 
-size_t  string_length(const String* str) {
-    return str->length;
-}
+size_t string_length(const String* str) { return str->length; }
 
-void string_print(const String *str) {
+void string_print(const String* str) {
     printf("%.*s\n", str->length, str->data);
 }
 
@@ -32,7 +30,7 @@ size_t string_find(const String* str, const char* substr) {
             amount_of_substr_chars_found = 0;
         }
     }
-    //TODO: use custom response struct
+    // TODO: use custom response struct
 }
 
 bool string_equals(const String* a, const String* b) {
