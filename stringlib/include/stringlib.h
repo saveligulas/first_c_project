@@ -20,7 +20,7 @@ String* string_clone(const String* str);
 void    string_clear(String** str);
 
 bool    string_insert(String* str, size_t pos, const char* text);
-int     string_find(const String* str, const char* substr);
+size_t     string_find(const String* str, const char* substr);
 bool    string_equals(const String* a, const String* b);
 String* string_substring(const String* str, size_t start, size_t len);
 
