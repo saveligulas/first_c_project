@@ -17,6 +17,7 @@ bool string_append_char(String* str, char c) {
     _append_char(str, c);
     return true;
 }
+
 void string_clear(String** str) {
     if (str != NULL && *str != NULL) {
         string_destroy(*str);
@@ -36,8 +37,9 @@ bool string_insert(String* str, size_t pos, const char* text) {
 
     size_t len = strlen(text);
 
-    if (pos + strlen(text) >= str->capacity) {
-        _set_string_capacity(str, _calc_new_capacity(str->capacity, len));
+    if (pos + strlen(text) + 1 >= str->capacity) {
+        bool result = _set_string_capacity(str, _calc_new_capacity(str->capacity, len));
+        if (!result) return false;
     }
 
     memmove(str->data + pos + len, str->data + pos, str->length - pos);

@@ -18,7 +18,7 @@ String* string_create_empty() {
 String* string_create(const char* initial) {
     if (initial == NULL) return NULL;
 
-    int length = strlen(initial);
+    size_t length = strlen(initial);
     if (STARTING_STRING_LENGTH >= length) {
         String* str = string_create_empty();
         _append_chars(str, initial, length);
@@ -50,8 +50,10 @@ String* string_create_explicit(const int capacity) {
 }
 
 void string_destroy(String* self) {
-    free(self->data);
-    free(self);
+    if (self != NULL) {
+        free(self->data);
+        free(self);
+    }
 }
 
 String* string_clone(const String* str) {

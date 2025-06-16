@@ -14,5 +14,6 @@ String* string_substring(const String* str, size_t start, size_t len) {
     char* substr_data = malloc(len);
     memcpy(substr_data, str->data + start, len);
     String* substr = string_create(substr_data);
+    free(substr_data);
     return substr;
 }

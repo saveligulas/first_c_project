@@ -95,8 +95,9 @@ void _grow_append(String *str, const char *text, const int length) {
     _append_chars(str, text, length);
 }
 
-int _calc_new_capacity(size_t current_capacity, size_t new_space_needed) {
-    int new_capacity = current_capacity + (current_capacity >> 1);
+size_t _calc_new_capacity(const size_t current_capacity,
+                          const size_t new_space_needed) {
+    size_t new_capacity = current_capacity + (current_capacity >> 1);
     if (new_capacity < new_space_needed + current_capacity) {
         new_capacity += new_space_needed;
     }
